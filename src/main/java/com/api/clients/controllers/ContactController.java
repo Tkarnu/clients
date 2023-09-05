@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/clients/{clientId}/contacts")
@@ -45,20 +45,20 @@ public class ContactController {
             return ResponseEntity.notFound().build();
         }
     }
-    @GetMapping("/{clientId}")
-    public ResponseEntity<List<Contact>> getContactsByClientId(@PathVariable Integer clientId) {
-        List<Contact> contacts = contactService.getContactsByClientId(clientId);
-        if (!contacts.isEmpty()) {
+    @GetMapping()
+    public ResponseEntity<Optional<Contact>> getContactsByClientId(@PathVariable Integer clientId) {
+        Optional<Contact> contacts = contactService.getContactsByClientId(clientId);
+        if (contacts.isPresent()) {
             return ResponseEntity.ok(contacts);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    @GetMapping("/{clientId}/{contactType}")
-    public ResponseEntity<List<Contact>> getContactsByClientIdAndContactType(@PathVariable Integer clientId, @PathVariable ContactType contactType) {
-        List<Contact> contacts = contactService.getContactsByClientIdAndContactType(clientId, contactType);
-        if (!contacts.isEmpty()) {
+    @GetMapping("/{contactType}")
+    public ResponseEntity<Optional<Contact>> getContactsByClientIdAndContactType(@PathVariable Integer clientId, @PathVariable ContactType contactType) {
+        Optional<Contact> contacts = contactService.getContactsByClientIdAndContactType(clientId, contactType);
+        if (contacts.isPresent()) {
             return ResponseEntity.ok(contacts);
         } else {
             return ResponseEntity.notFound().build();
