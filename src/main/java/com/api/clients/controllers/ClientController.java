@@ -53,7 +53,15 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Client> updateClient(@PathVariable Integer id, @RequestBody @Valid Client updatedClient) {
+    public ResponseEntity<?> updateClient(@PathVariable Integer id, @RequestBody @Valid Client updatedClient, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<String> errors = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.badRequest().body(errors);
+        }
+
         Client updated = clientService.updateClient(id, updatedClient);
         if (updated != null) {
             return ResponseEntity.ok(updated);

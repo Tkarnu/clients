@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -38,7 +37,15 @@ public class ContactController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Contact> updateContact(@PathVariable Integer clientId, @PathVariable Integer id, @RequestBody @Valid Contact updatedContact) {
+    public ResponseEntity<?> updateContact(@PathVariable Integer clientId, @PathVariable Integer id, @RequestBody @Valid Contact updatedContact, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<String> errors = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.badRequest().body(errors);
+        }
+
         Contact updated = contactService.updateContact(clientId, id, updatedContact);
         if (updated != null) {
             return ResponseEntity.ok(updated);
