@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -36,13 +37,13 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<Client> addClient(@RequestBody Client client) {
+    public ResponseEntity<Client> addClient(@RequestBody @Valid Client client) {
         Client createdClient = clientService.addClient(client);
         return ResponseEntity.ok(createdClient);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Client> updateClient(@PathVariable Integer id, @RequestBody Client updatedClient) {
+    public ResponseEntity<Client> updateClient(@PathVariable Integer id, @RequestBody @Valid Client updatedClient) {
         Client updated = clientService.updateClient(id, updatedClient);
         if (updated != null) {
             return ResponseEntity.ok(updated);

@@ -16,7 +16,6 @@ public class Client {
     @Column(name = "id")
     private Integer id;
 
-
     @NotBlank(message = "Имя клиента не может быть пустым")
     @Size(max = 255, message = "Имя клиента должно содержать не более 255 символов")
     private String name;
