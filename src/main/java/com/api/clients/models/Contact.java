@@ -2,10 +2,8 @@ package com.api.clients.models;
 
 import com.api.clients.enums.ContactType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Entity

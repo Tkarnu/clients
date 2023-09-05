@@ -4,11 +4,16 @@ import com.api.clients.enums.ContactType;
 import com.api.clients.models.Contact;
 import com.api.clients.services.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/clients/{clientId}/contacts")
@@ -21,7 +26,13 @@ public class ContactController {
     }
 
     @PostMapping
-    public ResponseEntity<Contact> addContact(@PathVariable Integer clientId, @RequestBody @Valid Contact contact) {
+    public ResponseEntity<?> addContact(@PathVariable Integer clientId, @RequestBody @Valid Contact contact, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<String> errors = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+            return ResponseEntity.badRequest().body(errors);
+        }
         Contact createdContact = contactService.addContact(clientId, contact);
         return ResponseEntity.ok(createdContact);
     }
