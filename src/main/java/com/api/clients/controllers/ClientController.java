@@ -1,9 +1,7 @@
 package com.api.clients.controllers;
 
 import com.api.clients.models.Client;
-import com.api.clients.models.Contact;
 import com.api.clients.services.ClientService;
-import com.api.clients.services.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

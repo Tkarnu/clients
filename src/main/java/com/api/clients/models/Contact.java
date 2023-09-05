@@ -17,8 +17,6 @@ public class Contact {
     @Column(name = "id")
     private Integer id;
 
-
-
     @NotBlank(message = "Значение контакта не может быть пустым")
     @Pattern(
             regexp ="^\\+?\\d{7,11}|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-_+%]+\\.[A-Za-z]{2,4}$",

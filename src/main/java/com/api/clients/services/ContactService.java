@@ -86,7 +86,7 @@ public class ContactService {
 
 
     private boolean isValidPhoneNumber(String phoneNumber) {
-        String regex = "^[\\d+\\-\\s]{7,11}$";
+        String regex = "^\\+\\d{7,11}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(phoneNumber);
         return matcher.matches();
