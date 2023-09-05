@@ -21,7 +21,7 @@ public class Contact {
 
     @NotBlank(message = "Значение контакта не может быть пустым")
     @Pattern(
-            regexp = "^(?:\\d{9,11}|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4})$",
+            regexp ="^\\+?\\d{7,11}|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-_+%]+\\.[A-Za-z]{2,4}$",
             message = "Значение контакта должно быть допустимым email-адресом или номером телефона"
     )
     @Column(name = "contact_value")
