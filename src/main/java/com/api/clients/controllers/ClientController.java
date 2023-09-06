@@ -2,6 +2,7 @@ package com.api.clients.controllers;
 
 import com.api.clients.models.Client;
 import com.api.clients.services.ClientService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +18,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/clients")
 public class ClientController {
     private final ClientService clientService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public ClientController(ClientService clientService) {
+    public ClientController(ClientService clientService, ModelMapper modelMapper) {
         this.clientService = clientService;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping

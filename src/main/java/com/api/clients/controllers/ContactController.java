@@ -3,6 +3,7 @@ package com.api.clients.controllers;
 import com.api.clients.enums.ContactType;
 import com.api.clients.models.Contact;
 import com.api.clients.services.ContactService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/clients/{clientId}/contacts")
 public class ContactController {
     private final ContactService contactService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public ContactController(ContactService contactService) {
+    public ContactController(ContactService contactService, ModelMapper modelMapper) {
         this.contactService = contactService;
+        this.modelMapper = modelMapper;
     }
 
     @PostMapping
