@@ -1,12 +1,17 @@
 package com.api.clients.dto;
 
 import com.api.clients.enums.ContactType;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
 public class ContactDTO {
+
     @NotBlank(message = "Значение контакта не может быть пустым")
     @Pattern(
             regexp ="^(\\+?\\d{7,11}" +

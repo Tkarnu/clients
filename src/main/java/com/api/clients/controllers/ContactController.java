@@ -1,5 +1,6 @@
 package com.api.clients.controllers;
 
+import com.api.clients.dto.ContactDTO;
 import com.api.clients.enums.ContactType;
 import com.api.clients.models.Contact;
 import com.api.clients.services.ContactService;
@@ -28,33 +29,17 @@ public class ContactController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addContact(@PathVariable Integer clientId, @RequestBody @Valid Contact contact, BindingResult bindingResult) {
+    public ResponseEntity<?> addContact(@PathVariable Integer clientId, @RequestBody @Valid ContactDTO contactDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<String> errors = bindingResult.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.toList());
             return ResponseEntity.badRequest().body(errors);
         }
+        Contact contact = modelMapper.map(contactDTO, Contact.class);
         Contact createdContact = contactService.addContact(clientId, contact);
-        return ResponseEntity.ok(createdContact);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateContact(@PathVariable Integer clientId, @PathVariable Integer id, @RequestBody @Valid Contact updatedContact, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            List<String> errors = bindingResult.getAllErrors().stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .collect(Collectors.toList());
-
-            return ResponseEntity.badRequest().body(errors);
-        }
-
-        Contact updated = contactService.updateContact(clientId, id, updatedContact);
-        if (updated != null) {
-            return ResponseEntity.ok(updated);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        ContactDTO createdContactDTO = modelMapper.map(createdContact, ContactDTO.class);
+        return ResponseEntity.ok(createdContactDTO);
     }
 
     @DeleteMapping("/{id}")
@@ -68,25 +53,35 @@ public class ContactController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Contact>> getContactsByClientId(@PathVariable Integer clientId) {
+    public ResponseEntity<List<ContactDTO>> getContactsByClientId(@PathVariable Integer clientId) {
         Optional<List<Contact>> optionalContacts = contactService.getContactsByClientId(clientId);
         if (optionalContacts.isPresent()) {
             List<Contact> contacts = optionalContacts.get();
-            return ResponseEntity.ok(contacts);
+            List<ContactDTO> contactDTOs = contacts.stream()
+                    .map(contact -> modelMapper.map(contact, ContactDTO.class))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(contactDTOs);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @GetMapping("/{contactType}")
-    public ResponseEntity<List<Contact>> getContactsByClientIdAndContactType(@PathVariable Integer clientId, @PathVariable String contactType) {
+    public ResponseEntity<List<ContactDTO>> getContactsByClientIdAndContactType(@PathVariable Integer clientId, @PathVariable String contactType) {
         contactType = contactType.trim().toUpperCase();
+
         try {
             ContactType type = ContactType.valueOf(contactType);
             Optional<List<Contact>> contacts = contactService.getContactsByClientIdAndContactType(clientId, type);
+
             if (contacts.isPresent()) {
                 List<Contact> contactList = contacts.get();
-                return ResponseEntity.ok(contactList);
+                List<ContactDTO> contactDTOs = contactList.stream()
+                        .map(contact -> modelMapper.map(contact, ContactDTO.class))
+                        .collect(Collectors.toList());
+
+                return ResponseEntity.ok(contactDTOs);
             } else {
                 return ResponseEntity.notFound().build();
             }
@@ -94,4 +89,5 @@ public class ContactController {
             return ResponseEntity.badRequest().build();
         }
     }
+
 }

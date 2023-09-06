@@ -51,18 +51,6 @@ public class ContactService {
         }
     }
 
-    public Contact updateContact(Integer clientId, Integer id, Contact updatedContact) {
-        Client client = clientRepository.findById(clientId).orElse(null);
-        Contact existingContact = contactRepository.findById(id).orElse(null);
-        if (existingContact != null) {
-            existingContact.setContactType(updatedContact.getContactType());
-            existingContact.setContactValue(updatedContact.getContactValue());
-            existingContact.setClient(client);
-            return contactRepository.save(existingContact);
-        }
-        return null;
-    }
-
     public boolean deleteContact(Integer clientId, Integer id) {
         Client client = clientRepository.findById(clientId).orElse(null);
         if (client != null) {
