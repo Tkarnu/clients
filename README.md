@@ -1,5 +1,5 @@
 
-RESTful API для работы с клиентами и их контактами:  Spring Boot, Spring MVC, Maven, PostgreSQL, ModelMapper, Enum, REGEXP, JSON, GIT
+RESTful API для работы с клиентами и их контактами:  Spring Boot, Spring MVC, Maven, PostgreSQL, ModelMapper, Enum, REGEXP, JSON, LOMBOK, GIT
 
 Описание эндпоинтов:
 
