@@ -63,10 +63,12 @@ public class ContactController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @GetMapping()
-    public ResponseEntity<Optional<Contact>> getContactsByClientId(@PathVariable Integer clientId) {
-        Optional<Contact> contacts = contactService.getContactsByClientId(clientId);
-        if (contacts.isPresent()) {
+    public ResponseEntity<List<Contact>> getContactsByClientId(@PathVariable Integer clientId) {
+        Optional<List<Contact>> optionalContacts = contactService.getContactsByClientId(clientId);
+        if (optionalContacts.isPresent()) {
+            List<Contact> contacts = optionalContacts.get();
             return ResponseEntity.ok(contacts);
         } else {
             return ResponseEntity.notFound().build();
@@ -74,12 +76,19 @@ public class ContactController {
     }
 
     @GetMapping("/{contactType}")
-    public ResponseEntity<Optional<Contact>> getContactsByClientIdAndContactType(@PathVariable Integer clientId, @PathVariable ContactType contactType) {
-        Optional<Contact> contacts = contactService.getContactsByClientIdAndContactType(clientId, contactType);
-        if (contacts.isPresent()) {
-            return ResponseEntity.ok(contacts);
-        } else {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<List<Contact>> getContactsByClientIdAndContactType(@PathVariable Integer clientId, @PathVariable String contactType) {
+        contactType = contactType.trim().toUpperCase();
+        try {
+            ContactType type = ContactType.valueOf(contactType);
+            Optional<List<Contact>> contacts = contactService.getContactsByClientIdAndContactType(clientId, type);
+            if (contacts.isPresent()) {
+                List<Contact> contactList = contacts.get();
+                return ResponseEntity.ok(contactList);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 }

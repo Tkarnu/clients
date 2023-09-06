@@ -8,6 +8,7 @@ import com.api.clients.repositories.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,12 +26,12 @@ public class ContactService {
         this.clientRepository = clientRepository;
     }
 
-    public Optional<Contact> getContactsByClientId(Integer clientId) {
+    public Optional<List<Contact>> getContactsByClientId(Integer clientId) {
         return contactRepository.findByClientId(clientId);
     }
 
 
-    public Optional<Contact> getContactsByClientIdAndContactType(Integer clientId, ContactType contactType) {
+    public Optional<List<Contact>> getContactsByClientIdAndContactType(Integer clientId, ContactType contactType) {
         return contactRepository.findByClientIdAndContactType(clientId, contactType);
     }
 

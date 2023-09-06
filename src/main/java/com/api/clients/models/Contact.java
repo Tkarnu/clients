@@ -3,8 +3,8 @@ package com.api.clients.models;
 import com.api.clients.enums.ContactType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
-import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "contacts")
@@ -17,7 +17,8 @@ public class Contact {
 
     @NotBlank(message = "Значение контакта не может быть пустым")
     @Pattern(
-            regexp ="^\\+?\\d{7,11}|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-_+%]+\\.[A-Za-z]{2,4}$",
+            regexp ="^(\\+?\\d{7,11}" +
+                    "|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-_+%]+\\.[A-Za-z]{2,4})$",
             message = "Значение контакта должно быть допустимым email-адресом или номером телефона"
     )
     @Column(name = "contact_value")

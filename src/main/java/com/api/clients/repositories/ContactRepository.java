@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface ContactRepository extends JpaRepository<Contact, Integer> {
-    Optional<Contact> findByClientId(Integer clientId);
-    Optional<Contact> findByClientIdAndContactType(Integer clientId, ContactType contactType);
+    Optional<List<Contact>> findByClientId(Integer clientId);
+    Optional<List<Contact>> findByClientIdAndContactType(Integer clientId, ContactType contactType);
 }

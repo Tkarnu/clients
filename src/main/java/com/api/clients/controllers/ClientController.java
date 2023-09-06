@@ -1,7 +1,6 @@
 package com.api.clients.controllers;
 
 import com.api.clients.models.Client;
-import com.api.clients.models.Contact;
 import com.api.clients.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
